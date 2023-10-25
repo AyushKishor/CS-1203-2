@@ -18,6 +18,24 @@ NODEPTR createNode(int value){
     newNode->key = value;
     newNode->left = NULL;
     newNode->right = NULL;
+    return newNode;
+}
+
+
+void displayTree(struct node* root, int space)
+{
+    int i;
+    if (root == NULL) return;
+    space += 10;
+    // Process right child first
+    displayTree(root->right, space);
+    // Print current node after space count
+    printf("\n");
+    for (i = 10; i < space; i++)
+    printf(" ");
+    printf("%d\n", root->key);
+    // Process left child
+    displayTree(root->left, space);
 }
 
 NODEPTR searchNode(NODEPTR root, int value){
@@ -27,30 +45,29 @@ NODEPTR searchNode(NODEPTR root, int value){
     }
 
     if(root-> key < value){
-        searchNode(root->right,value);
+        return searchNode(root->right,value);
     }
     if(root-> key > value){
-        searchNode(root->left,value);
+        return searchNode(root->left,value);
     }
     if(root->key == value){
         return root;
     }
     else{
-        return 0;
+        return NULL;
     }
 
 }
 
 NODEPTR insertNode(NODEPTR root, int value){
 
-    int direction = -1;
 
     if(root == NULL){
         NODEPTR newNode = createNode(value);
         return newNode;
     }
 
-    if(root->key == NULL){
+    if(!(root->key)){
         root->key = value;
         root->left = NULL;
         root->right = NULL;
@@ -58,18 +75,28 @@ NODEPTR insertNode(NODEPTR root, int value){
     }
 
     if(root->key < value){
-        insertNode(root->right,value);
-        direction = 1;
+        root->right = insertNode(root->right,value);
     }
     if(root->key > value){
-        insertNode(root->left,value);
-        direction = 0;
+        root->left = insertNode(root->left,value);
+    }
+
+    return root;
+    
+}
+
+int deleteNode(NODEPTR root, int value){
+    if(!(searchNode(root, value))){
+        return 0;
     }
     else{
+        NODEPTR foundNode = searchNode(root,value);
 
+        if(foundNode->left == NULL && foundNode->right == NULL){
+            
+        }
     }
-
-}
+};
 
 
 
@@ -79,13 +106,21 @@ NODEPTR insertNode(NODEPTR root, int value){
 
 
 int main(){
-    return 1;
-    createNode(40);
-    createNode(30);
-    createNode(50);
-    createNode(60);
-    createNode(45);
-    createNode(25);
-    createNode(35);
-    
+
+    NODEPTR root;
+
+    root = insertNode(root, 40);
+    root = insertNode(root, 30);
+    root = insertNode(root, 50);
+    root = insertNode(root, 60);
+    root = insertNode(root, 45);
+    root = insertNode(root, 25);
+    root = insertNode(root, 35);
+    root = insertNode(root, 42);
+    displayTree(root, 0);
+    // deleteNode();
+    NODEPTR k = searchNode(root, 35);
+    printf("%d", k -> key);
+
+    return 0;
 }
